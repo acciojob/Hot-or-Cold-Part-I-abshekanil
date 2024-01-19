@@ -1,33 +1,39 @@
 //your code here
 const button = document.getElementById('btn');
-let guessNumber = document.getElementById('guess').value;
+let guessInput = document.getElementById('guess');
 let response = document.getElementById('response');
 let respondHotOrCold = document.getElementById('respond');
-let randomNumber = Math.random()*100;
-let previousGuess = parseInt(guessNumber);
+let randomNumber = Math.floor(Math.random() * 100) + 1;
+let previousGuess = parseInt(guessInput.value);
 
 button.addEventListener('click', function(){
-
-	let difference = parseInt(guessNumber) - previousGuess;
+	let guessNumber = parseInt(guessInput.value);
+	let difference = Math.abs(guessNumber - previousGuess);
 		
-	if(parseInt(guessNumber) < randomNumber)
+	if(guessNumber < randomNumber)
 	{
 		response.innerHTML = 'guess higher';
 		 
-		if(difference < (parseInt(guessNumber) - randomNumber))
-		{
-			respondHotOrCold.innerHTML = 'Getting cooler';
-		}
-		elseif(difference > (parseInt(guessNumber) - randomNumber))
+		if(difference < Math.abs(previousGuess - randomNumber))
 		{
 			respondHotOrCold.innerHTML = 'Getting hotter';
 		}
+		else if(difference > Math.abs(previousGuess - randomNumber))
+		{
+			respondHotOrCold.innerHTML = 'Getting colder';
+		}
 	}
-	else if(parseInt(guessNumber) > randomNumber)
+	else if(guessNumber > randomNumber)
 	{
 		response.innerHTML = 'guess lower';
 	}
-	
+	else
+	{
+		response.innerHTML = 'Congratulations! you guessed it!';
+		respondHotOrCold.innerHTML = '';
+	}
+
+	previousGuess = guessNumber;
 });
 
 
