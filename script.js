@@ -4,36 +4,44 @@ let guessInput = document.getElementById('guess');
 let response = document.getElementById('response');
 let respondHotOrCold = document.getElementById('respond');
 let randomNumber = Math.floor(Math.random() * 100) + 1;
-let previousGuess = parseInt(guessInput.value);
+let previousGuess = null;
 
 button.addEventListener('click', function(){
 	let guessNumber = parseInt(guessInput.value);
-	let difference = Math.abs(guessNumber - previousGuess);
+
+	if(!isNaN(guessNumber) && guessNumber >= 1 && guessNumber <=100)
+	{
+		let difference = Math.abs(guessNumber - randomNumber);
+
+		if(previousGuess !== null)
+		{
+			let previousDifference = Math.abs(previousGuess - randomNumber);
+			if(difference < previousDifference)
+			{
+				respondHotOrCold.innerHTML = 'Getting hotter';
+				response.innerHTML = 'guess higher';
+				
+			} else if(difference > previousDifference){
+				respondHotOrCold.innerHTML = 'Getting colder';
+				response.innerHTML = 'guess lower';
+			} else {
+				respondHotOrCold.innerHTML = 'Same temperature as previous guess';
+			}
+		}
+
+		if(guessNumber === randomNumber)
+		{
+			response.innerHTML = 'Congratulations! you guessed it!';
+			respondHotOrCold.innerHTML = '';
+		}
+		previousGuess = guessNumber;
 		
-	if(guessNumber < randomNumber)
-	{
-		response.innerHTML = 'guess higher';
-		 
-		if(difference < Math.abs(previousGuess - randomNumber))
-		{
-			respondHotOrCold.innerHTML = 'Getting hotter';
-		}
-		else if(difference > Math.abs(previousGuess - randomNumber))
-		{
-			respondHotOrCold.innerHTML = 'Getting colder';
-		}
-	}
-	else if(guessNumber > randomNumber)
-	{
-		response.innerHTML = 'guess lower';
-	}
-	else
-	{
-		response.innerHTML = 'Congratulations! you guessed it!';
+	} else{
+		response.innerHTML = 'Invalid guess. Please enter a number between 1 and 100.';
 		respondHotOrCold.innerHTML = '';
 	}
-
-	previousGuess = guessNumber;
+		
+	
 });
 
 
